@@ -3,7 +3,7 @@ from pydrive.drive import GoogleDrive
 import os
 
 
-class GoogleDrive:
+class GDrive:
     @staticmethod
     def connect_to_google_drive():
         gauth = GoogleAuth()
@@ -20,7 +20,6 @@ class GoogleDrive:
     def upload_file_to_drive(drive, local_file_path, folder):
         file_drive = drive.CreateFile({'title': os.path.basename(local_file_path), 'parents': [{'id': folder['id']}]})
         file_drive.Upload()
-        return file_drive['id']
 
     @staticmethod
     def download_file_from_drive(drive, file_id, local_file_path):
@@ -44,8 +43,8 @@ class GoogleAdapter:
     def connect_to_folder(self, folder_id):
         self.folder = self.drive_obj.connect_to_folder(self.drive, folder_id)
     
-    def upload_file_to_drive(self, local_file_path, folder):
-        return self.drive_obj.upload_file_to_drive(self.drive, local_file_path, folder)
+    def upload_file_to_drive(self, local_file_path):
+        self.drive_obj.upload_file_to_drive(self.drive, local_file_path, self.folder)
     
     def download_file_from_drive(self, file_id, local_file_path):
         self.drive_obj.download_file_from_drive(self.drive, file_id, local_file_path)

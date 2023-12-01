@@ -67,12 +67,12 @@ class Main(QtWidgets.QMainWindow):
             self.ui.pushButton_AI.setFont(font)
 
     def open_win_1(self):
-        # try:
-        #     g_drive = drive.GoogleAdapter(drive.GoogleDrive())
-        # except Exception:
-        #     QtWidgets.QMessageBox.warning(self, "Ошибка", "Невозможно пройти аутентификацию!")
-        #     return
-        g_drive = drive.GoogleAdapter(drive.GoogleDrive())
+        try:
+            g_drive = drive.GoogleAdapter(drive.GDrive())
+        except Exception as e:
+            print(e)
+            QtWidgets.QMessageBox.warning(self, "Ошибка", "Невозможно пройти аутентификацию!")
+            return
         self.win_1 = Win1(g_drive)
         self.win_1.show()
 
@@ -95,7 +95,8 @@ class Win1(QtWidgets.QMainWindow):
             folder_id = self.parse_url(url)
             self.g_drive.connect_to_folder(folder_id)
             self.win_2 = Win2(self.g_drive)
-        except Exception:
+        except Exception as e:
+            print(e)
             QtWidgets.QMessageBox.warning(self, "Ошибка", "Введите ссылку на папку!")
             return
         self.win_2.show()
